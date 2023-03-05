@@ -1,7 +1,10 @@
 import java.util.Random;
 
+
+
 public class Board {
 
+	private static final int MAX_ATTEMPTS = 999 ;
 	private int n;
 	private int m;
 	private int s;
@@ -59,61 +62,89 @@ public class Board {
 
 	public void createBoard() {
 		int total = n * m;
-		Box pointer = new Box(1);
-		createBoard(pointer, 1, total);
+		createBoard(null, total);
 	}
 
-	public void createBoard(Box pointer, int position, int total) {
-		if (position > total) {
-			return;
+	public Box createBoard(Box pointer, int total) {
+		if (total == 1) {
+			root = new Box(1);
+			return root;
 		} else {
-			if (root == null) {
-				root = pointer;
-
-				root.setNext(new Box(++position));
-				createBoard(root.getNext(), position = position + 2, total);
-			} else {
-				pointer.setNext(new Box(position));
-				createBoard(pointer, ++position, total);
-			}
-
+			pointer = createBoard(pointer, total - 1);
+			Box newBox = new Box(total);
+			pointer.setNext(newBox);
+			return newBox;
 		}
 	}
 
-	public void addSnake(int creates) {
+/*
+		public void addSnake(int creates) {
 
-		if (creates <= s) {
+			if (creates <= s) {
+				int position1 = numberRandom(n * m);
+				int position2 = numberRandom(n * m);
+
+				if (position1 == position2 || position1 == 1 || position2 == 1 || position1 == n * m
+						|| position2 == n * m) {
+					addSnake(creates);
+				} else {
+					String letter = obtenerLetra(creates);
+					Box box1 = getBox(root, position1);
+					Box box2 = getBox(root, position2);
+					if (box1.nullAtributes() == 0 && box2.nullAtributes() == 0) {
+
+						box1.CreateSnake(letter);
+						box2.CreateSnake(letter);
+						addSnake(creates=creates+1);
+					} else {
+						addSnake(creates);
+
+
+					}
+
+				}
+			}
+			else{
+				return;
+			}
+
+		}
+*/
+
+	public void addSnake(int creates) {
+		int maxAttempts = 100;
+		int attempts = 0;
+		while (creates <= s) {
+			if (attempts > maxAttempts) {
+				// Detener el proceso de recursión si se ha intentado muchas veces sin éxito
+				return;
+			}
 			int position1 = numberRandom(n * m);
 			int position2 = numberRandom(n * m);
 
-			if (position1 == position2 || position1 == 1 || position2 == 1 || position1 == n * m
-					|| position2 == n * m) {
-				addSnake(creates);
+			if (position1 == position2 || position1 == 1 || position2 == 1 || position1 == n * m || position2 == n * m) {
+				// Seleccionar dos posiciones diferentes que no sean las esquinas ni la primera ni la última fila/columna
+				continue;
+			}
+			String letter = obtenerLetra(creates);
+			Box box1 = getBox(root, position1);
+			Box box2 = getBox(root, position2);
+			if (box1.nullAtributes() == 0 && box2.nullAtributes() == 0) {
+				box1.CreateSnake(letter);
+				box2.CreateSnake(letter);
+				creates++;
+				attempts = 0; // Reiniciar el contador de intentos si se ha creado una serpiente exitosamente
 			} else {
-				String letter = obtenerLetra(creates);
-				Box box1 = getBox(root, position1);
-				Box box2 = getBox(root, position2);
-				if (box1.nullAtributes() == 0 && box2.nullAtributes() == 0) {
-					box1.CreateSnake(letter);
-					box2.CreateSnake(letter);
-					addSnake(++creates);
-				} else {
-					addSnake(creates);
-
-				}
-
+				attempts++;
 			}
 		}
-
 	}
+
 
 	public String obtenerLetra(int numero) {
-
 		int codigoAscii = 'A' + numero - 1;
-
 		return Character.toString((char) codigoAscii);
 	}
-
 	public void addStair(int creates) {
 		if (creates <= s) {
 			int position1 = numberRandom(n * m);
@@ -123,8 +154,6 @@ public class Board {
 					|| position2 == n * m) {
 				addSnake(creates);
 			} else {
-				System.out.println(position1);
-				System.out.println(position2);
 
 				Box box1 = getBox(root, position1);
 				Box box2 = getBox(root, position2);
@@ -142,23 +171,36 @@ public class Board {
 	}
 
 	public Box getBox(Box pointer, int position) {
-		if (pointer != null && pointer.getNumber() != position) {
-			getBox(pointer.getNext(), position);
-		} else {
+		if (pointer == null) {
+			return null;
+		} else if (pointer.getNumber() == position) {
 			return pointer;
+		} else {
+			return getBox(pointer.getNext(), position);
 		}
-		return pointer;
-
 	}
 
 	public int numberRandom(int n) {
-		int number = 0;
-		Random r = new Random();
+		Random random= new Random();
+		return random.nextInt(n) + 1;
 
-		number = r.nextInt(n);
+	}
 
-		return number;
-
+	public String table(int n){
+		String lista="";
+      return table(root,lista,n);
+	}
+	public String table(Box pointer, String lista, int n){
+		if (pointer == null) {
+			return null;
+		}
+		if(pointer.getNumber() == n){
+			lista+= "["+pointer.getNumber();
+			return lista;
+		}
+		else{
+			return table(pointer.getNext(),lista,n);
+		}
 	}
 
 }

@@ -10,6 +10,8 @@ public class Box {
 
 	public Box(int number) {
 		this.number = number;
+		this.snake=null;
+		this.stair=null;
 	}
 
 	public int getNumber() {
@@ -37,13 +39,10 @@ public class Box {
 	}
 
 	public int nullAtributes() {
-		int x = 0;
-
-		if (snake == null && stair == null) {
-			return x;
-		} else {
-			return x = 1;
-		}
+     if(snake!=null && stair!=null){
+		 return 0;
+	 }
+	 return 1;
 
 	}
 
