@@ -6,12 +6,20 @@ public class Player {
 	private Player right;
 
 	private int box ;
+	private double score; 
 
 	public Player(String name, String symbol){
 		this.name = name;
 		this.symbol = symbol;
 		this.box=1;
+		this.score = 0.0; 
 
+	}
+	public double getScore() {
+		return score;
+	}
+	public void setScore(double score) {
+		this.score = score;
 	}
 	public String getName() {
 		return name;
@@ -51,4 +59,6 @@ public class Player {
 	public void setBox(int box) {
 		this.box = box;
 	}
+
+
 }

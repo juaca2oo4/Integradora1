@@ -12,6 +12,8 @@ public class Board {
 
 	private Box root;
 
+	private Box tail;
+
 	public Board(int n, int m, int s, int e) {
 		this.n = n;
 		this.m = m;
@@ -67,13 +69,13 @@ public class Board {
 
 	public Box createBoard(Box pointer, int total) {
 		if (total == 1) {
-			root = new Box(1);
+			root = new Box(1); // Crea el primer nodo de la lista
 			return root;
 		} else {
-			pointer = createBoard(pointer, total - 1);
-			Box newBox = new Box(total);
-			pointer.setNext(newBox);
-			return newBox;
+			pointer= createBoard(pointer,total-1); // Crea la lista hasta el número anterior
+			Box newBox = new Box(total); // Crea un nuevo nodo con el valor actual
+			pointer.setNext(newBox);  // Establece el nuevo nodo como el siguiente del nodo actual
+			return newBox; // Retorna el nuevo nodo como el nodo actual
 		}
 	}
 
@@ -202,5 +204,60 @@ public class Board {
 			return table(pointer.getNext(),lista,n);
 		}
 	}
+    public int position_Analysis(int n){
+		return position_Analysis(n,root);
+	}
+	private int position_Analysis(int n, Box pointer){
+	if(pointer.getNumber() != n){
+		position_Analysis(n,pointer.getNext());
+	}
+	else{
+		if(pointer.getSnake()!=null){
+			String symbol= pointer.getSymbolSnake();
+			int position_other_Snake=searchSnake(symbol,root);
+			if(position_other_Snake<n){
+				return position_other_Snake;
+			}
+			else{
+				return n;
+			}
+		}
+		else if(pointer.getStair()!=null){
+			int number=pointer.getNumberStair();
+			int position_other_stair=searchStair(number,root);
+			if(position_other_stair>n){
+				return position_other_stair;
+			}
+			else{
+				return n;
+			}
+		}
+		else{
+			return n;
+		}
+	}
+
+		return n;
+	}
+
+	private int searchSnake(String symbol,Box pointer){
+		if (pointer.getSnake()!=null && pointer.getSymbolSnake().equalsIgnoreCase(symbol)){
+			return pointer.getNumber();
+		}
+		else{
+			return searchSnake(symbol,pointer.getNext());
+		}
+	}
+	private int searchStair(int number,Box pointer){
+		if (pointer.getSnake()!=null && pointer.getNumberStair()==number){
+			return pointer.getNumber();
+		}
+		else{
+			return searchStair(number,pointer.getNext());
+		}
+	}
+
+	
+
 
 }

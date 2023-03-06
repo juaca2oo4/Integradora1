@@ -4,6 +4,8 @@ public class Box {
 
 	private Box next;
 
+	private  Box previous;
+
 	private Snake snake;
 
 	private Stair stair;
@@ -38,6 +40,14 @@ public class Box {
 		this.stair = new Stair(number);
 	}
 
+	public Box getPrevious() {
+		return previous;
+	}
+
+	public void setPrevious(Box previous) {
+		this.previous = previous;
+	}
+
 	public int nullAtributes() {
      if(snake!=null && stair!=null){
 		 return 0;
@@ -46,4 +56,27 @@ public class Box {
 
 	}
 
+	public Snake getSnake() {
+		return snake;
+	}
+
+	public void setSnake(Snake snake) {
+		this.snake = snake;
+	}
+
+	public Stair getStair() {
+		return stair;
+	}
+
+	public void setStair(Stair stair) {
+		this.stair = stair;
+	}
+
+	public String getSymbolSnake(){
+		return snake.getSymbol();
+	}
+
+	public int getNumberStair(){
+		return stair.getNumber();
+	}
 }

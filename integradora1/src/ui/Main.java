@@ -8,6 +8,7 @@ public class Main {
 
     public Main() {
         control = new Controller();
+         
     }
     public Scanner getLector(){
         return lector;
@@ -42,6 +43,17 @@ public class Main {
         return option;
     }
 
+    public int getMenu2(){
+        int option = 0;
+        System.out.println("\n escoge que quieres hacer: \n");
+        System.out.println(
+                        "1. Tirar dado \n" +
+                        "2. Ver escaleras y Serpientes . \n");
+
+        option =  validateIntegerInput();
+        return option;
+    }
+
     public void executeOption(int option){
 
         switch(option){
@@ -49,8 +61,29 @@ public class Main {
                 System.out.println("creemos el tablero");
                 createBoard();
                 createPlayer(1);
+
+                System.out.println("el tiempo empieza!");
+                //control.timer();
                 printBoard();
 
+                int option2 = 0; 
+
+                do{
+                    option2 = getMenu2();
+                    executeOption2(option2);
+                    if(control.gameOver()== 0){
+
+                        control.calculateScore(); 
+                        control.printPodium(); 
+                        option2 =0; 
+
+
+                        break; 
+                    }
+
+
+                }while(option2 !=0);
+            
                 break;
             case 0:
                 System.out.println("Exit program.");
@@ -62,6 +95,35 @@ public class Main {
         }
     }
 
+    public void executeOption2(int option2){
+
+        switch(option2){
+            case  1:
+            System.out.println(control.turn());
+            System.out.println("\n vas a tirar un dado \n");
+            control.throwDice();
+            printBoard();
+            break;
+
+            case 2:
+            System.out.println(control.turn());
+            System.out.println("vas a ver las serpientes y las escaleras\n");
+
+
+            System.out.println("tiraras el dado y te moveras...");
+            control.throwDice();
+            printBoard();
+            
+
+            break; 
+
+            default:
+            System.out.println("invalid option");
+            break; 
+
+        }
+
+    }
 
 public void createBoard() {
 System.out.println("ingrese el numero de filas");
@@ -78,7 +140,7 @@ System.out.println("ingrese el numero de filas");
         }
         System.out.println("ingrese el numero de serpientes");
         int s = validateIntegerInput();
-        if(s == -1){
+        if(s == -1 ){
             System.out.println("opcion invalida");
 
         }
@@ -88,22 +150,29 @@ System.out.println("ingrese el numero de filas");
             System.out.println("opcion invalida");
 
         }
-        control.createGame(n, m, s, e);
+        if(e+s >= n*m){
+            System.out.println("el numero de escaleras y serpientes es mayor al numero de casillas :c, intentalo otra vez\n ");
+            createBoard();
+        }else{
+            control.createGame(n, m, s, e);
+        }
+        
     }
     public void createPlayer(int count){
 
-        System.out.println("vamos a registrar los 3 jugadores del juego.");
+        System.out.println("\n vamos a registrar los 3 jugadores del juego.\n");
         while (count <=3){
             System.out.println("ingrese el nombre de tu jugador");
             String name = lector.next();
             System.out.println("ingrese alguno de estos simbolos:  * ! O X % $ # + &");
             String symbol = lector.next();
-            if(symbol.equalsIgnoreCase("*") || symbol.equalsIgnoreCase("!") || symbol.equalsIgnoreCase("O") || symbol.equalsIgnoreCase("X") || symbol.equalsIgnoreCase("$") || symbol.equalsIgnoreCase("#") || symbol.equalsIgnoreCase("+") || symbol.equalsIgnoreCase("&")) {
-                String msj = control.createPlayer(name, symbol) + "";
+            if(symbol.equalsIgnoreCase("*") || symbol.equalsIgnoreCase("!") || symbol.equalsIgnoreCase("O") || symbol.equalsIgnoreCase("X") ||symbol.equalsIgnoreCase("%") ||symbol.equalsIgnoreCase("$") || symbol.equalsIgnoreCase("#") || symbol.equalsIgnoreCase("+") || symbol.equalsIgnoreCase("&")) {
+                String msj = control.createPlayer(name, symbol) + " "+ count;
+    
                 count++;
             }
             else{
-                System.out.println("ingrese un simbolo valido para el juego" + count);
+                System.out.println("ingrese un simbolo valido para el jugador " + count);
             }
         }
         System.out.println("ya se registraron todos los jugadores, empecemos a jugar!");
