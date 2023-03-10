@@ -2,25 +2,29 @@ public class Player {
 
 	private String name;
 	private String symbol;
-	private Player left;
-	private Player right;
+	private Player next;
+	private int turn;
 
-	private int box ;
-	private double score; 
+	private int box;
+	private double score;
 
-	public Player(String name, String symbol){
+	public Player(String name, String symbol, int turn) {
 		this.name = name;
 		this.symbol = symbol;
-		this.box=1;
-		this.score = 0.0; 
+		this.turn = turn;
+		this.box = 1;
+		this.score = 0.0;
 
 	}
+
 	public double getScore() {
 		return score;
 	}
+
 	public void setScore(double score) {
 		this.score = score;
 	}
+
 	public String getName() {
 		return name;
 	}
@@ -28,6 +32,7 @@ public class Player {
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public String getSymbol() {
 		return symbol;
 	}
@@ -36,20 +41,12 @@ public class Player {
 		this.symbol = symbol;
 	}
 
-	public Player getLeft() {
-		return left;
+	public Player getNext() {
+		return next;
 	}
 
-	public void setLeft(Player left) {
-		this.left = left;
-	}
-
-	public Player getRight() {
-		return right;
-	}
-
-	public void setRight(Player right) {
-		this.right = right;
+	public void setNext(Player next) {
+		this.next = next;
 	}
 
 	public int getBox() {
@@ -60,5 +57,12 @@ public class Player {
 		this.box = box;
 	}
 
+	public int getTurn() {
+		return turn;
+	}
+
+	public void setTurn(int turn) {
+		this.turn = turn;
+	}
 
 }

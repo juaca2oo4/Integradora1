@@ -8,9 +8,10 @@ public class Main {
 
     public Main() {
         control = new Controller();
-         
+
     }
-    public Scanner getLector(){
+
+    public Scanner getLector() {
         return lector;
     }
 
@@ -21,69 +22,67 @@ public class Main {
         // llamdo a uno de los metodos de la clase.
         int option = 0;
 
-        do{
+        do {
 
             option = main.getOptionShowMenu();
             main.executeOption(option);
 
-        }while(option != 0);
+        } while (option != 0);
 
         main.getLector().close();
 
     }
 
-    public int getOptionShowMenu(){
+    public int getOptionShowMenu() {
         int option = 0;
         System.out.println("<<<<< Snakkes And Ladders >>>>>");
         System.out.println(
-                        "1. Jugar \n" +
+                "1. Jugar \n" +
                         "0. Exit. \n");
 
-        option =  validateIntegerInput();
+        option = validateIntegerInput();
         return option;
     }
 
-    public int getMenu2(){
+    public int getMenu2() {
         int option = 0;
         System.out.println("\n escoge que quieres hacer: \n");
         System.out.println(
-                        "1. Tirar dado \n" +
+                "1. Tirar dado \n" +
                         "2. Ver escaleras y Serpientes . \n");
 
-        option =  validateIntegerInput();
+        option = validateIntegerInput();
         return option;
     }
 
-    public void executeOption(int option){
+    public void executeOption(int option) {
 
-        switch(option){
+        switch (option) {
             case 1:
                 System.out.println("creemos el tablero");
                 createBoard();
                 createPlayer(1);
 
                 System.out.println("el tiempo empieza!");
-                //control.timer();
+                // control.timer();
                 printBoard();
 
-                int option2 = 0; 
+                int option2 = 0;
 
-                do{
+                do {
                     option2 = getMenu2();
                     executeOption2(option2);
-                    if(control.gameOver()== 0){
+                    if (control.gameOver() == 0) {
 
-                        control.calculateScore(); 
-                        control.printPodium(); 
-                        option2 =0; 
+                        control.calculateScore();
+                        control.printPodium();
+                        option2 = 0;
 
-
-                        break; 
+                        break;
                     }
 
+                } while (option2 != 0);
 
-                }while(option2 !=0);
-            
                 break;
             case 0:
                 System.out.println("Exit program.");
@@ -95,83 +94,87 @@ public class Main {
         }
     }
 
-    public void executeOption2(int option2){
+    public void executeOption2(int option2) {
 
-        switch(option2){
-            case  1:
-            System.out.println(control.turn());
-            System.out.println("\n vas a tirar un dado \n");
-            control.throwDice();
-            printBoard();
-            break;
+        switch (option2) {
+            case 1:
+                System.out.println(control.turn());
+                System.out.println("\n vas a tirar un dado \n");
+                control.throwDice();
+                printBoard();
+                printSE();
+                break;
 
             case 2:
-            System.out.println(control.turn());
-            System.out.println("vas a ver las serpientes y las escaleras\n");
+                System.out.println(control.turn());
+                System.out.println("vas a ver las serpientes y las escaleras\n");
+                printSE();
+                System.out.println("tiraras el dado y te moveras...");
+                control.throwDice();
+                printBoard();
 
-
-            System.out.println("tiraras el dado y te moveras...");
-            control.throwDice();
-            printBoard();
-            
-
-            break; 
+                break;
 
             default:
-            System.out.println("invalid option");
-            break; 
+                System.out.println("invalid option");
+                break;
 
         }
 
     }
 
-public void createBoard() {
-System.out.println("ingrese el numero de filas");
+    public void createBoard() {
+        System.out.println("ingrese el numero de filas");
         int n = validateIntegerInput();
-        if(n == -1){
+        if (n == -1) {
             System.out.println("opcion invalida");
 
         }
         System.out.println("ingrese el numero de columnas");
-        int m =validateIntegerInput();
-        if(m == -1){
+        int m = validateIntegerInput();
+        if (m == -1) {
             System.out.println("opcion invalida");
 
         }
         System.out.println("ingrese el numero de serpientes");
         int s = validateIntegerInput();
-        if(s == -1 ){
+        if (s == -1) {
             System.out.println("opcion invalida");
 
         }
         System.out.println("ingrese el numero de escaleras");
         int e = validateIntegerInput();
-        if(e == -1){
+        if (e == -1) {
             System.out.println("opcion invalida");
 
         }
-        if(e+s >= n*m){
-            System.out.println("el numero de escaleras y serpientes es mayor al numero de casillas :c, intentalo otra vez\n ");
+        if (e + s >= n * m) {
+            System.out.println(
+                    "el numero de escaleras y serpientes es mayor al numero de casillas :c, intentalo otra vez\n ");
             createBoard();
-        }else{
+        } else {
             control.createGame(n, m, s, e);
         }
-        
+
     }
-    public void createPlayer(int count){
+
+    public void createPlayer(int count) {
 
         System.out.println("\n vamos a registrar los 3 jugadores del juego.\n");
-        while (count <=3){
+
+        while (count <= 3) {
             System.out.println("ingrese el nombre de tu jugador");
             String name = lector.next();
             System.out.println("ingrese alguno de estos simbolos:  * ! O X % $ # + &");
             String symbol = lector.next();
-            if(symbol.equalsIgnoreCase("*") || symbol.equalsIgnoreCase("!") || symbol.equalsIgnoreCase("O") || symbol.equalsIgnoreCase("X") ||symbol.equalsIgnoreCase("%") ||symbol.equalsIgnoreCase("$") || symbol.equalsIgnoreCase("#") || symbol.equalsIgnoreCase("+") || symbol.equalsIgnoreCase("&")) {
-                String msj = control.createPlayer(name, symbol) + " "+ count;
-    
+            if (symbol.equalsIgnoreCase("*") || symbol.equalsIgnoreCase("!") || symbol.equalsIgnoreCase("O")
+                    || symbol.equalsIgnoreCase("X") || symbol.equalsIgnoreCase("%") || symbol.equalsIgnoreCase("$")
+                    || symbol.equalsIgnoreCase("#") || symbol.equalsIgnoreCase("+") || symbol.equalsIgnoreCase("&")) {
+                String msj = control.createPlayer(name, symbol, count) + " " + count;
+
                 count++;
-            }
-            else{
+
+            } else {
                 System.out.println("ingrese un simbolo valido para el jugador " + count);
             }
         }
@@ -179,16 +182,14 @@ System.out.println("ingrese el numero de filas");
 
     }
 
-
-    public int validateIntegerInput(){
+    public int validateIntegerInput() {
         int option = 0;
 
-        if(lector.hasNextInt()){
+        if (lector.hasNextInt()) {
             option = lector.nextInt();
             lector.nextLine();
 
-        }
-        else{
+        } else {
             // clear reader.
             lector.nextLine();
             option = -1;
@@ -196,18 +197,20 @@ System.out.println("ingrese el numero de filas");
 
         return option;
     }
+
     /**
-     * validateDoubleInput: this method validates that the option entered by the user is actually an double data type
-     * @return option: is a double or int  option.
+     * validateDoubleInput: this method validates that the option entered by the
+     * user is actually an double data type
+     * 
+     * @return option: is a double or int option.
      */
 
-    public double validateDoubleInput(){
+    public double validateDoubleInput() {
         double option = 0;
 
-        if(lector.hasNextDouble()){
+        if (lector.hasNextDouble()) {
             option = lector.nextDouble();
-        }
-        else{
+        } else {
             // clear reader.
             lector.nextLine();
             option = -1;
@@ -216,10 +219,12 @@ System.out.println("ingrese el numero de filas");
         return option;
     }
 
-
-    public void printBoard(){
+    public void printBoard() {
         System.out.println(control.print());
     }
 
+    public void printSE() {
+        System.out.println(control.printSE());
+    }
 
 }
