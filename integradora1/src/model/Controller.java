@@ -142,7 +142,7 @@ public class Controller {
             }
         } else {
             if (intervalo1 >= intervalo2) {
-                massage += "[" + intervalo1;
+                massage += "[" ;
                 massage += board.tableSE(intervalo1) + "]";
                 return printContrio(--intervalo1, intervalo2, massage, tipo);
             } else {
@@ -163,6 +163,10 @@ public class Controller {
         int position_Player = abbPlayer.trowDice(number, board.getM() * board.getN(), turn);
         System.out.println("la supuesta nueva posicion del jugador es " + position_Player);
         if (position_Player == -1) {
+
+            end = Instant.now();
+            duration = Duration.between(start, end);
+            seg = duration.toNanos() / 1_000_000_000.0;
             // finish game
         } else if (position_Player == -2) {
             massage = "te pasaste de la ultima casilla, vuelve a intentarlo en tu proximo tiro";
@@ -202,34 +206,23 @@ public class Controller {
         return "el jugador se ha registrado, jugador numero:   ";
     }
 
-    public double gameOver() {
-        if (-1 == abbPlayer.stopGame(board.getN(), board.getM())) {
-            end = Instant.now();
-            duration = Duration.between(start, end);
-            seg = duration.toNanos() / 1_000_000_000.0;
-            return seg  ;
-        } else {
-            return 1;
-
-        }
-
-    }
-    public int verificationStopGame(){
-        if (-1 == abbPlayer.stopGame(board.getN(), board.getM())) {
-            return 0  ;
-        } else {
-            return 1;
-
-        }
-
-    }
-
     public void calculateScore() {
-        abbPlayer.calculateScore(seg, board.getN(), board.getM());
+        abbPlayer.calculateScore(seg,turn);
     }
 
     public String printPodium() {
         return abbPlayer.printPodium();
+    }
+
+    public void reset(){
+        board = null;
+        turn = 1;
+        start = null;
+        end = null;
+        duration = null;
+        seg =  null; 
+        abbPlayer.deleteList();
+
     }
 
 }

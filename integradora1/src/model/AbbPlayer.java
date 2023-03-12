@@ -10,26 +10,6 @@ public class AbbPlayer {
 
     }
 
-    /*
-     * public void insert(String name, String symbol) {
-     * this.root = insert(this.root, name, symbol);
-     * }
-     * 
-     * private Player insert(Player player, String name, String symbol) {
-     * if (player == null) {
-     * return new Player(name, symbol);
-     * }
-     * 
-     * if (name.compareTo(player.getName()) < 0) {
-     * player.setLeft(insert(player.getLeft(), name, symbol));
-     * } else {
-     * player.setRight(insert(player.getRight(), name, symbol));
-     * }
-     * 
-     * return player;
-     * }
-     */
-
     public void insert(String name, String symbol, int turn) {
         insert(head, name, symbol, turn);
     }
@@ -124,24 +104,33 @@ public class AbbPlayer {
         }
     }
 
-    public double calculateScore(Double seg, int n, int m) {
-        return calculateScore(seg, head, n, m, 0);
+    public double calculateScore(Double seg, int turn) {
+        Player player = find(head, turn); 
+        return calculateScore(seg, player, 0);
 
     }
 
-    private double calculateScore(Double seg, Player player, int n, int m, double score) {
-        if (player.getBox() == (n * m)) {
+    private double calculateScore(Double seg, Player player, double score) {
             score = (600 - seg) / 6;
             player.setScore(score);
             scorreAbb.insert(new NodeScore(player.getName(), score));
             return score;
-        } else {
-            return calculateScore(seg, player.getNext(), n, m, score);
-        }
+        
     }
 
     public String printPodium() {
         return scorreAbb.inOrderString();
+    }
+    public void deleteList(){
+        deleteList(head);
+    }
+
+    private void deleteList(Player head) {
+        if (head != null) {
+            Player next = head.getNext();
+            head.setNext(null);
+            deleteList(next);
+        }
     }
 
 }

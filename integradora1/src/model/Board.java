@@ -10,7 +10,6 @@ public class Board {
 
 	private Box root;
 
-	private Box tail;
 
 	public Board(int n, int m, int s, int e) {
 		this.n = n;
@@ -77,78 +76,8 @@ public class Board {
 		}
 	}
 
-	/*
-	 * public void addSnake(int creates) {
-	 * 
-	 * if (creates <= s) {
-	 * int position1 = numberRandom(n * m);
-	 * int position2 = numberRandom(n * m);
-	 * 
-	 * if (position1 == position2 || position1 == 1 || position2 == 1 || position1
-	 * == n * m
-	 * || position2 == n * m) {
-	 * addSnake(creates);
-	 * } else {
-	 * String letter = obtenerLetra(creates);
-	 * Box box1 = getBox(root, position1);
-	 * Box box2 = getBox(root, position2);
-	 * if (box1.nullAtributes() == 0 && box2.nullAtributes() == 0) {
-	 * 
-	 * box1.CreateSnake(letter);
-	 * box2.CreateSnake(letter);
-	 * addSnake(creates=creates+1);
-	 * } else {
-	 * addSnake(creates);
-	 * 
-	 * 
-	 * }
-	 * 
-	 * }
-	 * }
-	 * else{
-	 * return;
-	 * }
-	 * 
-	 * }
-	 */
-
 	public void addSnake(int creates) {
-		int maxAttempts = 100;
-		int attempts = 0;
-		while (creates <= s) {
-			if (attempts > maxAttempts) {
-				// Detener el proceso de recursión si se ha intentado muchas veces sin éxito
-				return;
-			}
-			int position1 = numberRandom(n * m);
-			int position2 = numberRandom(n * m);
 
-			if (position1 == position2 || position1 == 1 || position2 == 1 || position1 == n * m
-					|| position2 == n * m) {
-				// Seleccionar dos posiciones diferentes que no sean las esquinas ni la primera
-				// ni la última fila/columna
-				continue;
-			}
-			String letter = obtenerLetra(creates);
-			Box box1 = getBox(root, position1);
-			Box box2 = getBox(root, position2);
-			if (box1.nullAtributes() == 0 && box2.nullAtributes() == 0) {
-				box1.CreateSnake(letter);
-				box2.CreateSnake(letter);
-				creates++;
-				attempts = 0; // Reiniciar el contador de intentos si se ha creado una serpiente exitosamente
-			} else {
-				attempts++;
-			}
-		}
-	}
-
-	public String obtenerLetra(int numero) {
-		int codigoAscii = 'A' + numero - 1;
-		return Character.toString((char) codigoAscii);
-	}
-
-	public void addStair(int creates) {
 		if (creates <= s) {
 			int position1 = numberRandom(n * m);
 			int position2 = numberRandom(n * m);
@@ -157,15 +86,50 @@ public class Board {
 					|| position2 == n * m) {
 				addSnake(creates);
 			} else {
+				String letter = obtenerLetra(creates);
+				Box box1 = getBox(root, position1);
+				Box box2 = getBox(root, position2);
+				if (box1.nullAtributes() == 0 && box2.nullAtributes() == 0) {
+
+					box1.CreateSnake(letter);
+					box2.CreateSnake(letter);
+
+					addSnake(creates = creates + 1);
+				} else {
+					addSnake(creates);
+
+				}
+
+			}
+		} else {
+			return;
+		}
+
+	}
+
+	public String obtenerLetra(int numero) {
+		int codigoAscii = 'A' + numero - 1;
+		return Character.toString((char) codigoAscii);
+	}
+
+	public void addStair(int creates) {
+		if (creates <= e){
+			int position1 = numberRandom(n * m);
+			int position2 = numberRandom(n * m);
+
+			if (position1 == position2 || position1 == 1 || position2 == 1 || position1 == n * m
+					|| position2 == n * m) {
+				addStair(creates);
+			} else {
 
 				Box box1 = getBox(root, position1);
 				Box box2 = getBox(root, position2);
 				if (box1.nullAtributes() == 0 && box2.nullAtributes() == 0) {
 					box1.CreateStair(creates);
 					box2.CreateStair(creates);
-					addSnake(++creates);
+					addStair(++creates);
 				} else {
-					addSnake(creates);
+					addStair(creates);
 				}
 
 			}
@@ -236,11 +200,11 @@ public class Board {
 
 	private int position_Analysis(int n, Box pointer) {
 		if (pointer.getNumber() != n) {
-			position_Analysis(n, pointer.getNext());
+			return position_Analysis(n, pointer.getNext());
 		} else {
 			if (pointer.getSnake() != null) {
 				String symbol = pointer.getSymbolSnake();
-				int position_other_Snake = searchSnake(symbol, root);
+				int position_other_Snake = searchSnake(symbol, root,pointer);
 				if (position_other_Snake < n) {
 					return position_other_Snake;
 				} else {
@@ -248,7 +212,7 @@ public class Board {
 				}
 			} else if (pointer.getStair() != null) {
 				int number = pointer.getNumberStair();
-				int position_other_stair = searchStair(number, root);
+				int position_other_stair = searchStair(number, root,pointer);
 				if (position_other_stair > n) {
 					return position_other_stair;
 				} else {
@@ -258,23 +222,21 @@ public class Board {
 				return n;
 			}
 		}
-
-		return n;
 	}
 
-	private int searchSnake(String symbol, Box pointer) {
-		if (pointer.getSnake() != null && pointer.getSymbolSnake().equalsIgnoreCase(symbol)) {
+	private int searchSnake(String symbol, Box pointer,Box val) {
+		if (pointer.getSnake() != null && pointer.getSymbolSnake().equalsIgnoreCase(symbol) && pointer != val) {
 			return pointer.getNumber();
 		} else {
-			return searchSnake(symbol, pointer.getNext());
+			return searchSnake(symbol, pointer.getNext(), val);
 		}
 	}
 
-	private int searchStair(int number, Box pointer) {
-		if (pointer.getSnake() != null && pointer.getNumberStair() == number) {
+	private int searchStair(int number, Box pointer, Box val) {
+		if (pointer.getStair() != null && pointer.getNumberStair() == number && pointer != val) {
 			return pointer.getNumber();
 		} else {
-			return searchStair(number, pointer.getNext());
+			return searchStair(number, pointer.getNext(), val);
 		}
 	}
 

@@ -47,7 +47,7 @@ public class ScorreAbb {
 			return ""; 
 		}
 
-		return inOrderString(current.getLeft()) + " " +"jugador "+ current.getName()+" puntaje: " + current.getScore() + " " + inOrderString(current.getRight()); 
+		return inOrderString(current.getLeft()) + ",  " +"jugador: "+ current.getName()+" puntaje: " + current.getScore() + " , " + inOrderString(current.getRight()); 
 	}
 
 

@@ -71,11 +71,12 @@ public class Main {
                 do {
                     option2 = getMenu2();
                     executeOption2(option2);
-                    if (control.verificationStopGame() == 0 ) {
+                    if (control.getEnd() != null ) {
 
                         control.calculateScore();
-                        control.printPodium();
+                        System.out.println("PODIO DE JUGADORES: \n" + control.printPodium());
                         option2 = 0;
+                        control.reset();
 
                         break;
                     }
@@ -99,9 +100,8 @@ public class Main {
             case 1:
                 System.out.println(control.turn());
                 System.out.println("\n vas a tirar un dado \n");
-                control.throwDice();
+                System.out.println(control.throwDice());
                 printBoard();
-                printSE();
                 break;
 
             case 2:
@@ -109,7 +109,7 @@ public class Main {
                 System.out.println("vas a ver las serpientes y las escaleras\n");
                 printSE();
                 System.out.println("tiraras el dado y te moveras...");
-                control.throwDice();
+                System.out.println(control.throwDice());
                 printBoard();
 
                 break;
@@ -147,7 +147,7 @@ public class Main {
             System.out.println("opcion invalida");
 
         }
-        if (e + s >= n * m) {
+        if ((e + s)*2 >= n * m) {
             System.out.println(
                     "el numero de escaleras y serpientes es mayor al numero de casillas :c, intentalo otra vez\n ");
             createBoard();
