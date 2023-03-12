@@ -1,3 +1,6 @@
+import java.time.Duration;
+import java.time.Instant;
+
 public class Controller {
 
     private Board board;
@@ -5,36 +8,39 @@ public class Controller {
     private AbbPlayer abbPlayer;
 
     private int turn;
+    
+    private Instant start;
 
-    private int seg;
+    private Instant end;
 
-    private boolean stop;
+    private Duration duration;
+
+    private Double seg; 
 
     public Controller() {
         abbPlayer = new AbbPlayer();
         turn = 1;
-        seg = 0;
-        stop = false;
 
     }
 
-    public void timer() {
-        while (!stop) {
-            try {
-                Thread.sleep(1000);
-                seg++;
-            } catch (InterruptedException ex) {
-                System.out.println("se paro el tiempo, el juego se cerró");
-            }
-            if (-1 == abbPlayer.stopGame(board.getN(), board.getM())) { // Detener después de que jugador llegue a la
-                                                                        // casilla final
-                stop = true;
-                System.out.println("se paro el tiempo, se acabo el juego");
-            }
-        }
+    public Instant getStart() {
+        return start;
+    }
+
+
+    public Instant getEnd() {
+        return end;
+    }
+
+
+    public Duration getDuration() {
+        return duration;
     }
 
     public String createGame(int n, int m, int s, int e) {
+
+        start = Instant.now();
+
         String massage = "";
 
         if (s * e > n * m) {
@@ -196,9 +202,21 @@ public class Controller {
         return "el jugador se ha registrado, jugador numero:   ";
     }
 
-    public int gameOver() {
+    public double gameOver() {
         if (-1 == abbPlayer.stopGame(board.getN(), board.getM())) {
-            return 0;
+            end = Instant.now();
+            duration = Duration.between(start, end);
+            seg = duration.toNanos() / 1_000_000_000.0;
+            return seg  ;
+        } else {
+            return 1;
+
+        }
+
+    }
+    public int verificationStopGame(){
+        if (-1 == abbPlayer.stopGame(board.getN(), board.getM())) {
+            return 0  ;
         } else {
             return 1;
 

@@ -1,11 +1,11 @@
 public class ScorreAbb {
-    Player root; 
+    NodeScore root; 
 
     public ScorreAbb(){
         this.root = null;
 
     }
-    public void insert(Player player){
+    public void insert(NodeScore player){
 		if(root == null){
 			root = player; 
 		}
@@ -14,7 +14,7 @@ public class ScorreAbb {
 		}
 	}
 
-	private void insert(Player player, Player current){
+	private void insert(NodeScore player, NodeScore current){
 		// Izquierda 
 		if(player.getScore() < current.getScore()){
 			if(current.getLeft() == null){
@@ -42,7 +42,7 @@ public class ScorreAbb {
 		return "[" + inOrderString(root) + "]"; 
 	}
 
-	private String inOrderString(Player current){
+	private String inOrderString(NodeScore current){
 		if(current == null){
 			return ""; 
 		}

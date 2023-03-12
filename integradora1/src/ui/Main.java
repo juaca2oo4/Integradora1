@@ -64,7 +64,6 @@ public class Main {
                 createPlayer(1);
 
                 System.out.println("el tiempo empieza!");
-                // control.timer();
                 printBoard();
 
                 int option2 = 0;
@@ -72,7 +71,7 @@ public class Main {
                 do {
                     option2 = getMenu2();
                     executeOption2(option2);
-                    if (control.gameOver() == 0) {
+                    if (control.verificationStopGame() == 0 ) {
 
                         control.calculateScore();
                         control.printPodium();

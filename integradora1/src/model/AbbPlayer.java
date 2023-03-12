@@ -124,16 +124,16 @@ public class AbbPlayer {
         }
     }
 
-    public double calculateScore(int seg, int n, int m) {
+    public double calculateScore(Double seg, int n, int m) {
         return calculateScore(seg, head, n, m, 0);
 
     }
 
-    private double calculateScore(int seg, Player player, int n, int m, double score) {
+    private double calculateScore(Double seg, Player player, int n, int m, double score) {
         if (player.getBox() == (n * m)) {
             score = (600 - seg) / 6;
             player.setScore(score);
-            scorreAbb.insert(player);
+            scorreAbb.insert(new NodeScore(player.getName(), score));
             return score;
         } else {
             return calculateScore(seg, player.getNext(), n, m, score);
