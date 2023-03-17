@@ -8,14 +8,14 @@ public class Controller {
     private AbbPlayer abbPlayer;
 
     private int turn;
-    
+
     private Instant start;
 
     private Instant end;
 
     private Duration duration;
 
-    private Double seg; 
+    private Double seg;
 
     public Controller() {
         abbPlayer = new AbbPlayer();
@@ -27,11 +27,9 @@ public class Controller {
         return start;
     }
 
-
     public Instant getEnd() {
         return end;
     }
-
 
     public Duration getDuration() {
         return duration;
@@ -142,7 +140,7 @@ public class Controller {
             }
         } else {
             if (intervalo1 >= intervalo2) {
-                massage += "[" ;
+                massage += "[";
                 massage += board.tableSE(intervalo1) + "]";
                 return printContrio(--intervalo1, intervalo2, massage, tipo);
             } else {
@@ -159,7 +157,7 @@ public class Controller {
 
     public String throwDice() {
         String massage = "";
-        int number = board.numberRandom(7);
+        int number = board.numberRandom(6);
         int position_Player = abbPlayer.trowDice(number, board.getM() * board.getN(), turn);
         System.out.println("la supuesta nueva posicion del jugador es " + position_Player);
         if (position_Player == -1) {
@@ -207,20 +205,20 @@ public class Controller {
     }
 
     public void calculateScore() {
-        abbPlayer.calculateScore(seg,turn);
+        abbPlayer.calculateScore(seg, turn);
     }
 
     public String printPodium() {
         return abbPlayer.printPodium();
     }
 
-    public void reset(){
+    public void reset() {
         board = null;
         turn = 1;
         start = null;
         end = null;
         duration = null;
-        seg =  null; 
+        seg = null;
         abbPlayer.deleteList();
 
     }

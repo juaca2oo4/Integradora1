@@ -2,14 +2,12 @@ import java.util.Random;
 
 public class Board {
 
-	private static final int MAX_ATTEMPTS = 999;
 	private int n;
 	private int m;
 	private int s;
 	private int e;
 
 	private Box root;
-
 
 	public Board(int n, int m, int s, int e) {
 		this.n = n;
@@ -113,7 +111,7 @@ public class Board {
 	}
 
 	public void addStair(int creates) {
-		if (creates <= e){
+		if (creates <= e) {
 			int position1 = numberRandom(n * m);
 			int position2 = numberRandom(n * m);
 
@@ -204,7 +202,7 @@ public class Board {
 		} else {
 			if (pointer.getSnake() != null) {
 				String symbol = pointer.getSymbolSnake();
-				int position_other_Snake = searchSnake(symbol, root,pointer);
+				int position_other_Snake = searchSnake(symbol, root, pointer);
 				if (position_other_Snake < n) {
 					return position_other_Snake;
 				} else {
@@ -212,7 +210,7 @@ public class Board {
 				}
 			} else if (pointer.getStair() != null) {
 				int number = pointer.getNumberStair();
-				int position_other_stair = searchStair(number, root,pointer);
+				int position_other_stair = searchStair(number, root, pointer);
 				if (position_other_stair > n) {
 					return position_other_stair;
 				} else {
@@ -224,7 +222,7 @@ public class Board {
 		}
 	}
 
-	private int searchSnake(String symbol, Box pointer,Box val) {
+	private int searchSnake(String symbol, Box pointer, Box val) {
 		if (pointer.getSnake() != null && pointer.getSymbolSnake().equalsIgnoreCase(symbol) && pointer != val) {
 			return pointer.getNumber();
 		} else {

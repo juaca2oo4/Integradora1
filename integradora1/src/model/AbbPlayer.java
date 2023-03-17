@@ -105,23 +105,24 @@ public class AbbPlayer {
     }
 
     public double calculateScore(Double seg, int turn) {
-        Player player = find(head, turn); 
+        Player player = find(head, turn);
         return calculateScore(seg, player, 0);
 
     }
 
     private double calculateScore(Double seg, Player player, double score) {
-            score = (600 - seg) / 6;
-            player.setScore(score);
-            scorreAbb.insert(new NodeScore(player.getName(), score));
-            return score;
-        
+        score = (600 - seg) / 6;
+        player.setScore(score);
+        scorreAbb.insert(new NodeScore(player.getName(), score));
+        return score;
+
     }
 
     public String printPodium() {
         return scorreAbb.inOrderString();
     }
-    public void deleteList(){
+
+    public void deleteList() {
         deleteList(head);
     }
 
@@ -129,6 +130,7 @@ public class AbbPlayer {
         if (head != null) {
             Player next = head.getNext();
             head.setNext(null);
+            this.head = null;
             deleteList(next);
         }
     }
