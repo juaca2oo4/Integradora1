@@ -6,23 +6,13 @@ public class Player {
 	private int turn;
 
 	private int box;
-	private double score;
 
 	public Player(String name, String symbol, int turn) {
 		this.name = name;
 		this.symbol = symbol;
 		this.turn = turn;
 		this.box = 1;
-		this.score = 0.0;
 
-	}
-
-	public double getScore() {
-		return score;
-	}
-
-	public void setScore(double score) {
-		this.score = score;
 	}
 
 	public String getName() {

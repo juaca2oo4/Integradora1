@@ -112,7 +112,6 @@ public class AbbPlayer {
 
     private double calculateScore(Double seg, Player player, double score) {
         score = (600 - seg) / 6;
-        player.setScore(score);
         scorreAbb.insert(new NodeScore(player.getName(), score));
         return score;
 
